@@ -53,7 +53,11 @@ jobs:
       - name: Build Debug APK
         run: |
           gradle -p "$PROJECT_DIR" assembleDebug --stacktrace
-
+      - name: Show APK Package Name
+        run: |
+          APK=$(find project -name "*.apk" -print -quit)
+          AAPT=$(find "$ANDROID_HOME/build-tools" -name aapt -type f | head -n 1)
+          "$AAPT" dump badging "$APK" | grep "^package:"
       - name: Upload APK
         uses: actions/upload-artifact@v4
         with:
